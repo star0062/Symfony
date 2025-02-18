@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TeamTask index{% endblock %}
+
+{% block body %}
+    <h1>TeamTask index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for team_task in team_tasks %}
+            <tr>
+                <td>{{ team_task.id }}</td>
+                <td>
+                    <a href="{{ path('app_team_task_show', {'id': team_task.id}) }}">show</a>
+                    <a href="{{ path('app_team_task_edit', {'id': team_task.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_team_task_new') }}">Create new</a>
+{% endblock %}
