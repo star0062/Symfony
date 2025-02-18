@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title "Amis" %}
+{% block title %}Amis{% endblock %}
 
 {% block body %}
-    {{ slug }} {{ person.firstname }} {{ person.lastname }}
- {% endblock %}
+    <h1>{{ slug | replace({'-': ' '}) | capitalize }}</h1>
+    <p>Nom : {{ person.firstname }} {{ person.lastname | upper }}</p>
+{% endblock %}

@@ -1,7 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tout les amis{% endblock %}
+{% block title %}Tous les amis{% endblock %}
 
 {% block body %}
- Mathieu est mon ami !
- {% endblock %}
+    <h1>Liste des amis</h1>
+    <p>Louis est mon ami !</p>
+    <ul>
+        <li>
+            <a href="{{ path('friends.show', {id: 32, slug: 'ajouter-un-ami'}) }}">Ajouter un copain</a>
+        </li>
+    </ul>
+{% endblock %}
