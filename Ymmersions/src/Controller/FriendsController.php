@@ -20,6 +20,7 @@ final class FriendsController extends AbstractController
     #[Route(path: '/amis/{slug}-{id}', name: 'friends.show', requirements: ['id' => '\d+', 'slug' => '[a-z0-9-]+'])]
     public function show(Request $request, string $slug, int $id): Response
     {
+        $this-> denyAccessUnlessGranted('ROLE_USER');
         return $this -> render('friends/show.html.twig', [
             'slug' => $slug,
             'id' => $id,
