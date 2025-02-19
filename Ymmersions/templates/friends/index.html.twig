@@ -3,11 +3,33 @@
 {% block title %}Tous les amis{% endblock %}
 
 {% block body %}
-    <h1>Liste des amis</h1>
-    <p>Louis est mon ami !</p>
-    <ul>
-        <li>
-            <a href="{{ path('friends.show', {id: 32, slug: 'ajouter-un-ami'}) }}">Ajouter un copain</a>
-        </li>
-    </ul>
+    <h1> {{ friend.username }} </h1>
+    
+    <p>
+        {{ friend.firstname | nl2br }} {{ friend.lastname }}
+    </p>
+
+    <p>
+        <a class="btn btn-primary btn-sm" href="{{ path('friends.create', {id: friend.id}) }}">Créer une quete</a>
+    </p>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for friend in friend %}    
+            <tr>
+                <td>
+                    <a href="{{ path('/amis/{slug}-{id}', {id: friend.id, slug friend.slug}) }}">{{ friend.title }}</a>
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ path('friends.edit', {id: friend.id}) }}">Editer</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
 {% endblock %}
