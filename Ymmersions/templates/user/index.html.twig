@@ -1,49 +1,37 @@
+{# filepath: /c:/Users/najma/Documents/B2/php-Symfony/Symfony/Ymmersions/templates/user/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}User List{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+    <h1>User List</h1>
 
-    <table class="table">
+    <table>
         <thead>
             <tr>
-                <th>Id</th>
+                <th>ID</th>
                 <th>Pseudo</th>
                 <th>Mail</th>
-                <th>Password</th>
-                <th>PP</th>
-                <th>Level</th>
-                <th>HP</th>
-                <th>DateCreate</th>
-                <th>LastUpdate</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.pseudo }}</td>
-                <td>{{ user.mail }}</td>
-                <td>{{ user.password }}</td>
-                <td>{{ user.PP }}</td>
-                <td>{{ user.level }}</td>
-                <td>{{ user.HP }}</td>
-                <td>{{ user.dateCreate ? user.dateCreate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ user.lastUpdate ? user.lastUpdate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.pseudo }}</td>
+                    <td>{{ user.mail }}</td>
+                    <td>
+                        <a href="{{ path('app_user_edit', {id: user.id}) }}">Edit</a>
+                        <form method="post" action="{{ path('app_user_delete', {id: user.id}) }}" style="display:inline;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                            <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_user_new') }}">Create new</a>
+    <a href="{{ path('user_new') }}">Create new User</a>
 {% endblock %}

@@ -6,6 +6,7 @@ use App\Entity\Team;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,15 +21,20 @@ class UserType extends AbstractType
             ->add('PP')
             ->add('level')
             ->add('HP')
-            ->add('dateCreate', null, [
+            ->add('dateCreate', DateTimeType::class, [
                 'widget' => 'single_text',
+                'html5' => false,
+                'format' => 'yyyy-MM-dd HH:mm:ss',
             ])
-            ->add('lastUpdate', null, [
+            ->add('lastUpdate', DateTimeType::class, [
                 'widget' => 'single_text',
+                'html5' => false,
+                'format' => 'yyyy-MM-dd HH:mm:ss',
             ])
-            ->add('idteam', EntityType::class, [
+            ->add('team', EntityType::class, [
                 'class' => Team::class,
-                'choice_label' => 'id',
+                'choice_label' => 'teamName', 
+                'label' => 'Team Name', 
             ])
         ;
     }

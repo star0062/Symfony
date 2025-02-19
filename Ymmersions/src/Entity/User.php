@@ -7,8 +7,11 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity]
+#[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -25,8 +28,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private $password;
 
+    // This property is not persisted to the database
+    private $plainPassword;
+
     #[ORM\Column(type: 'string', nullable: true)]
     private $PP;
+
+    #[Vich\UploadableField(mapping: 'user_profile_pictures', fileNameProperty: 'PP')]
+    private ?File $PPFile = null;
 
     #[ORM\Column(type: 'integer')]
     private $level = 1;
@@ -42,7 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Team::class)]
     #[ORM\JoinColumn(nullable: true)]
-    private $idteam;
+    private $team;
 
     /**
      * @var Collection<int, Team>
@@ -65,7 +74,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     // Getters and setters for each property...
-
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +115,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
     public function getPP(): ?string
     {
         return $this->PP;
@@ -117,6 +137,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->PP = $PP;
 
         return $this;
+    }
+
+    public function setPPFile(?File $PPFile = null): void
+    {
+        $this->PPFile = $PPFile;
+
+        if (null !== $PPFile) {
+            $this->lastUpdate = new \DateTimeImmutable();
+        }
+    }
+
+    public function getPPFile(): ?File
+    {
+        return $this->PPFile;
     }
 
     public function getLevel(): ?int
@@ -167,14 +201,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getIdteam(): ?Team
+    public function getTeam(): ?Team
     {
-        return $this->idteam;
+        return $this->team;
     }
 
-    public function setIdteam(?Team $idteam): self
+    public function setTeam(?Team $team): self
     {
-        $this->idteam = $idteam;
+        $this->team = $team;
 
         return $this;
     }
@@ -186,14 +220,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        // Return an empty array as roles are not used in this project
-        return [];
+        // Return an array of roles
+        return ['ROLE_USER'];
     }
 
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     /**
