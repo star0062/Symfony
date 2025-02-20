@@ -1,5 +1,9 @@
 twig:
     file_name_pattern: '*.twig'
+<<<<<<< HEAD
+=======
+    form_themes: ['bootstrap_5_layout.html.twig']
+>>>>>>> Cléo
 
 when@test:
     twig:

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous les amis{% endblock %}
+
+{% block body %}
+    <h1> {{ friends.username }} </h1>
+    
+    <p>
+        {{ friends.firstname | nl2br }} {{ friends.lastname }}
+    </p>
+
+    <p>
+        <a class="btn btn-primary btn-sm" href="{{ path('friends.create', {id: friends.id}) }}">Créer une quete</a>
+    </p>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for friends in friends %}    
+            <tr>
+                <td>
+                    <a href="{{ path('/amis/{slug}-{id}', {id: friends.id, slug: friends.slug}) }}">{{ friends.title }}</a>
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ path('friends.edit', {id: friends.id}) }}">Editer</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+{% endblock %}
