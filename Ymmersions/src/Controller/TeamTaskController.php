@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\TeamTask;
 use App\Form\TeamTaskType;
-use App\Repository\TeamTaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +14,14 @@ use Symfony\Component\Routing\Attribute\Route;
 final class TeamTaskController extends AbstractController
 {
     #[Route(name: 'app_team_task_index', methods: ['GET'])]
-    public function index(TeamTaskRepository $teamTaskRepository): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
+        $teamTasks = $entityManager
+            ->getRepository(TeamTask::class)
+            ->findAll();
+
         return $this->render('team_task/index.html.twig', [
-            'team_tasks' => $teamTaskRepository->findAll(),
+            'team_tasks' => $teamTasks,
         ]);
     }
 
@@ -42,7 +45,7 @@ final class TeamTaskController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_team_task_show', methods: ['GET'])]
+    #[Route('/{task_id}', name: 'app_team_task_show', methods: ['GET'])]
     public function show(TeamTask $teamTask): Response
     {
         return $this->render('team_task/show.html.twig', [
@@ -50,7 +53,7 @@ final class TeamTaskController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_team_task_edit', methods: ['GET', 'POST'])]
+    #[Route('/{task_id}/edit', name: 'app_team_task_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, TeamTask $teamTask, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(TeamTaskType::class, $teamTask);
@@ -68,10 +71,10 @@ final class TeamTaskController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_team_task_delete', methods: ['POST'])]
+    #[Route('/{task_id}', name: 'app_team_task_delete', methods: ['POST'])]
     public function delete(Request $request, TeamTask $teamTask, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$teamTask->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$teamTask->getTask_id(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($teamTask);
             $entityManager->flush();
         }

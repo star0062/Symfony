@@ -9,6 +9,8 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Points</th>
+                <th>Date</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -16,6 +18,8 @@
         {% for score in scores %}
             <tr>
                 <td>{{ score.id }}</td>
+                <td>{{ score.points }}</td>
+                <td>{{ score.date ? score.date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('app_score_show', {'id': score.id}) }}">show</a>
                     <a href="{{ path('app_score_edit', {'id': score.id}) }}">edit</a>
@@ -23,7 +27,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="2">no records found</td>
+                <td colspan="4">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

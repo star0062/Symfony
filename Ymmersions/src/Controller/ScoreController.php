@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Score;
 use App\Form\ScoreType;
-use App\Repository\ScoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +14,14 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ScoreController extends AbstractController
 {
     #[Route(name: 'app_score_index', methods: ['GET'])]
-    public function index(ScoreRepository $scoreRepository): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
+        $scores = $entityManager
+            ->getRepository(Score::class)
+            ->findAll();
+
         return $this->render('score/index.html.twig', [
-            'scores' => $scoreRepository->findAll(),
+            'scores' => $scores,
         ]);
     }
 

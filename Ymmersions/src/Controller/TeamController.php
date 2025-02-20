@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Team;
 use App\Form\TeamType;
-use App\Repository\TeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +14,14 @@ use Symfony\Component\Routing\Attribute\Route;
 final class TeamController extends AbstractController
 {
     #[Route(name: 'app_team_index', methods: ['GET'])]
-    public function index(TeamRepository $teamRepository): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
+        $teams = $entityManager
+            ->getRepository(Team::class)
+            ->findAll();
+
         return $this->render('team/index.html.twig', [
-            'teams' => $teamRepository->findAll(),
+            'teams' => $teams,
         ]);
     }
 

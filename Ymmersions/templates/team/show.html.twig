@@ -11,6 +11,22 @@
                 <th>Id</th>
                 <td>{{ team.id }}</td>
             </tr>
+            <tr>
+                <th>TeamName</th>
+                <td>{{ team.teamName }}</td>
+            </tr>
+            <tr>
+                <th>DateCreate</th>
+                <td>{{ team.dateCreate ? team.dateCreate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateUpdate</th>
+                <td>{{ team.dateUpdate ? team.dateUpdate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Point</th>
+                <td>{{ team.point }}</td>
+            </tr>
         </tbody>
     </table>
 

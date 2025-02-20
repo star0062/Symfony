@@ -11,6 +11,14 @@
                 <th>Id</th>
                 <td>{{ score.id }}</td>
             </tr>
+            <tr>
+                <th>Points</th>
+                <td>{{ score.points }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ score.date ? score.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
         </tbody>
     </table>
 
