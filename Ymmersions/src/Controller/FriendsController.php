@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use APP\Entity\Friend;
+use App\Entity\Friend;
 use App\Form\FriendType;
 use Symfony\Component\Validator\Constraints\IsbnValidator;
 
@@ -18,8 +18,7 @@ final class FriendsController extends AbstractController
     #[Route(path: '/amis', name: 'friends.index')]
     public function index(Request $request, FriendRepository $repository, EntityManagerInterface $em): Response
     {
-        $friends = $repository->findWithDurationLowerThan(20);
-
+        $this-> denyAccessUnlessGranted('ROLE_USER');
         $friend = new friend();
         $friend->setUsername('phelipo')
                 ->setSlug('phillipe-lipovitch')
@@ -28,7 +27,7 @@ final class FriendsController extends AbstractController
         $em->persist($friend);
         $em->flush();
         return $this->render('friends/index.html.twig', [
-            'friends' => $friends
+            'friends' => $friend
         ]);
     }
 
@@ -40,9 +39,8 @@ final class FriendsController extends AbstractController
         if ($friend->getSlug() != $slug) {
             return $this->redirectToRoute('friends.show', ['slug' =>  $friend->getslug(), 'id' => $friend->getid()]);
         }
-        $this-> denyAccessUnlessGranted('ROLE_USER');
         return $this -> render('friends/show.html.twig', [
-            'friend' => $friend
+            'friends' => $friend
         ]);
     }
 
@@ -57,7 +55,7 @@ final class FriendsController extends AbstractController
             return $this-> redirectToRoute('friends.index');
         }
         return $this->render('friends/edit.html.twig', [
-            'friend' => $friend,
+            'friends' => $friend,
             'form' => $form
         ]);
     }
@@ -69,11 +67,10 @@ final class FriendsController extends AbstractController
         $form = $this->createForm(FriendType::class, $friend);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->Isvalid()) {
-            $friend->setFriendAt(new \DateTimeImmutable());
             $em->persist($friend);
             $em->flush();
             $this->addFlash('success', 'La recette à bien été créée');
-            return $this->redirectToRoute('friend.index');
+            return $this->redirectToRoute('friends.index');
         }
         return $this->render('friends/create.html.twig', [
             'form' => $form

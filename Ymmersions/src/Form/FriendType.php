@@ -17,9 +17,6 @@ class FriendType extends AbstractType
             ->add('username')
             ->add('lastname')
             ->add('slug')
-            ->add('friendAt', null, [
-                'widget' => 'single_text',
-            ])
             ->add('save', SubmitType::class)
         ;
     }

@@ -25,9 +25,6 @@ class Friend
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $friendAt = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -77,18 +74,6 @@ class Friend
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getFriendAt(): ?\DateTimeImmutable
-    {
-        return $this->friendAt;
-    }
-
-    public function setFriendAt(\DateTimeImmutable $friendAt): static
-    {
-        $this->friendAt = $friendAt;
 
         return $this;
     }
