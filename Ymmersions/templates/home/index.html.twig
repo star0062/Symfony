@@ -1,8 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello FriendsController!{% endblock %}
+{% block title %}Accueil - Habit Tracker{% endblock %}
 
 {% block body %}
-    <h1>Bienvenue sur la page d'accueil</h1>
-    <p>Ceci est la page d'accueil de votre site.</p>
+<div class="container text-center mt-5">
+    <h1>Bienvenue sur Habit Tracker</h1>
+    <p>Suivez et améliorez vos habitudes avec un système gamifié !</p>
+    <a href="{{ path('app_login') }}" class="btn btn-primary m-2">Se connecter</a>
+    <a href="{{ path('app_register') }}" class="btn btn-success m-2">S'inscrire</a>
+</div>
 {% endblock %}
