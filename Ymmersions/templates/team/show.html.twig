@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Team: {{ team.teamName }}{% endblock %}
+
+{% block body %}
+    <h1>{{ team.teamName }}</h1>
+    <p>Created on: {{ team.dateCreate|date('Y-m-d H:i:s') }}</p>
+    <p>Points: {{ team.point }}</p>
+
+    <h2>Members:</h2>
+    <ul>
+    {% for user in team.users %}
+        <li>{{ user.pseudo }}</li>
+    {% endfor %}
+    </ul>
+
+    <h2>Tasks:</h2>
+    <ul>
+    {% for task in team.teamTasks %}
+        <li>{{ task.title }} ({{ task.point }} points)</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
