@@ -33,8 +33,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-<<<<<<< HEAD
-=======
     public function findUserByEmailOrUsername(string $userNameOrEmail): ?User 
     {
         return $this->createQueryBuilder('u')
@@ -45,7 +43,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getSingleResult();
     }
->>>>>>> Cléo
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */

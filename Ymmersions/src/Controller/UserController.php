@@ -84,4 +84,12 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_index');
     }
+
+    // #[Route('/accueil', name: 'accueil')]
+    // public function accueil()
+    // {
+    //     return $this->render('base.html.twig',[]);
+    // }
+   
+
 }

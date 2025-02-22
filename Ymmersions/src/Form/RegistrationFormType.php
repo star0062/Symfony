@@ -4,14 +4,6 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-<<<<<<< HEAD
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-=======
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,23 +12,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
->>>>>>> Cléo
 
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-<<<<<<< HEAD
-            ->add('pseudo', TextType::class, [
-                'label' => 'Pseudo',
-            ])
-            ->add('mail', EmailType::class)
-            ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
-=======
             ->add('username')
             ->add('email')
             ->add('agreeTerms', CheckboxType::class, [
@@ -66,19 +47,20 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('save', SubmitType::class, [
                 'label' => "S'enregistrer"
->>>>>>> Cléo
             ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+        // $resolver->setDefaults([
+        //     'data_class' => User::class,
+        // ]);
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'csrf_protection' => true, // Ensure CSRF protection is enabled
+            'csrf_field_name' => '_token', // Default field name for CSRF token
+            'csrf_token_id'   => 'registration_form', // Optional: Unique token ID
         ]);
     }
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> Cléo
