@@ -34,8 +34,8 @@ class GroupController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            // Utilisation de getUser() directement sans passer par Security
-            $creator = $this->getUser(); // On obtient l'utilisateur connecté
+            
+            $creator = $this->getUser(); 
             if ($creator) {
                 $group->setCreator($creator);
                 $entityManager->persist($group);
@@ -84,7 +84,7 @@ class GroupController extends AbstractController
         $invitation->setRefused(false);
 
         $group = $invitation->getGroup();
-        $group->addUser($invitation->getUser()); // Ajouter l'utilisateur au groupe
+        $group->addUser($invitation->getUser()); 
 
         $entityManager->flush();
 

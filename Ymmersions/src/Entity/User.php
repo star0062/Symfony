@@ -42,10 +42,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // Propriété temporaire pour le mot de passe en clair (non persistée en base)
     private ?string $plainPassword = null;
 
+    /**
+     * @var Collection<int, Habit>
+     */
+    #[ORM\OneToMany(targetEntity: Habit::class, mappedBy: 'creator', orphanRemoval: true)]
+    private Collection $habits;
+
     public function __construct()
     {
         $this->groupsParticipated = new ArrayCollection();
         $this->createdGroups = new ArrayCollection();
+        $this->habits = new ArrayCollection();
     }
 
     // Getters et setters pour la propriété plainPassword
@@ -138,5 +145,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getCreatedGroups(): Collection
     {
         return $this->createdGroups;
+    }
+
+    /**
+     * @return Collection<int, Habit>
+     */
+    public function getHabits(): Collection
+    {
+        return $this->habits;
+    }
+
+    public function addHabit(Habit $habit): static
+    {
+        if (!$this->habits->contains($habit)) {
+            $this->habits->add($habit);
+            $habit->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHabit(Habit $habit): static
+    {
+        if ($this->habits->removeElement($habit)) {
+            // set the owning side to null (unless already changed)
+            if ($habit->getCreator() === $this) {
+                $habit->setCreator(null);
+            }
+        }
+
+        return $this;
     }
 }
