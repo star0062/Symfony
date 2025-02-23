@@ -1,151 +1,264 @@
 {% block title %}{% endblock %}
 
 {% block body %}
-    <header>
-        <div class="header-container">
-            <h1>Liste des groupes</h1>
-            <div class="nav-links">
-                <a href="{{ path('group_create') }}" class="create-group-link">Créer un nouveau groupe</a>
-                <a class="nav-link" href="{{ path('home') }}">Accueil</a>
-                <a class="nav-link" href="{{ path('friends.index') }}">Amis</a>
-                <a class="nav-link" href="{{ path('group_index') }}">Groupes</a>
-                
-                <!-- Lien de déconnexion ajouté -->
-                <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
-            </div>
-        </div>
-    </header>
-
-    {% if groups is not empty %}
-        <ul class="group-list">
-            {% for group in groups %}
-                <li class="group-item">
-                    <strong>{{ group.name }}</strong><br>
-                    Score : {{ group.score }}<br>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Aucun groupe trouvé.</p>
-    {% endif %}
-
     <style>
-        /* Général */
+        /* Style global */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* En-tête */
-        header {
-            background-color: #333;
-            color: white;
-            padding: 15px 30px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
+            background-color: #f5f7fa;
+            color: #333;
         }
 
         h1 {
-            font-size: 28px;
-            margin: 0;
-            color: #ffffff;
+            font-size: 2rem;
+            color: #333;
+            text-align: center;
+            margin: 40px 0;
+            font-weight: 700;
         }
 
-        /* Liens de navigation */
-        .nav-links {
+        /* Header */
+        header {
+            background-color: #34495e;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
         }
 
-        .nav-link, .create-group-link {
-            text-decoration: none;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s, transform 0.2s;
+        /* Navbar */
+        .navbar-nav {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+            justify-content: flex-start;
+        }
+
+        .nav-item {
             display: inline-block;
         }
 
-        .nav-link:hover, .create-group-link:hover {
-            background-color: #45a049;
-            transform: translateY(-3px);
+        .nav-link {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 5px;
+            background-color: #3498db;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        /* Lien pour créer un groupe */
+        .nav-link:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+
+        /* Créer un groupe */
         .create-group-link {
-            background-color: #ffffff;
-            color: #4CAF50;
-            border: 2px solid #4CAF50;
+            color: #fff;
+            background-color: #3498db;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .create-group-link:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
         }
 
         /* Liste des groupes */
-        .group-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 30px auto;
-            width: 80%;
+        ul {
+            list-style: none;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        li {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            justify-content: space-between;
+            transition: box-shadow 0.3s ease;
         }
 
-        .group-item {
-            background-color: #ffffff;
-            padding: 20px;
-            margin: 0;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        li:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .group-item strong {
-            font-size: 1.2em;
-            color: #4CAF50;
+        li strong {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c3e50;
         }
 
-        /* Message lorsqu'aucun groupe n'est trouvé */
+        /* Liens d'action */
+        .action-links {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 10px;
+        }
+
+        .invite-link, .delete-group-link, .quit-group-link {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 0.875rem;
+            margin-right: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .invite-link:hover, .delete-group-link:hover, .quit-group-link:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .accept-invitation-link, .refuse-invitation-link {
+            background-color: #e74c3c;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            margin-right: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .accept-invitation-link:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .refuse-invitation-link:hover {
+            background-color: #e74c3c;
+            transform: scale(1.05);
+        }
+
+        span {
+            display: inline-block;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        span.accepted {
+            color: green;
+            font-weight: bold;
+        }
+
+        span.refused {
+            color: red;
+            font-weight: bold;
+        }
+
         p {
             text-align: center;
             font-size: 1.2em;
-            color: #888;
+            color: #999;
         }
 
-        /* Responsive Design */
+        /* Responsive */
         @media (max-width: 768px) {
             .header-container {
                 flex-direction: column;
                 align-items: center;
             }
 
-            h1 {
-                font-size: 22px;
-                margin-bottom: 10px;
-            }
-
-            .nav-links {
+            .navbar-nav {
                 flex-direction: column;
-                align-items: center;
                 gap: 10px;
             }
 
-            .group-list {
-                width: 90%;
+            .create-group-link {
+                margin-top: 15px;
+                font-size: 1.1rem;
+            }
+
+            ul {
+                padding: 10px;
+            }
+
+            li {
+                padding: 15px;
             }
         }
     </style>
+
+    <header>
+        <div class="header-container">
+            <nav>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('home') }}">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('friends.index') }}">Amis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('group_index') }}">Groupes</a>
+                    </li>
+                    {% if app.user %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <a href="{{ path('group_create') }}" class="create-group-link">Créer un nouveau groupe</a>
+        </div>
+    </header>
+
+    {% if groups is not empty %}
+        <ul>
+            {% for group in groups %}
+                <li>
+                    <strong>{{ group.name }}</strong><br>
+                    Score : {{ group.score }}<br>
+
+                    <div class="action-links">
+                        {% if group.creator == app.user %}
+                            <a href="{{ path('group_invite', {'id': group.id}) }}" class="invite-link">Inviter un utilisateur</a>
+                            <a href="{{ path('group_delete', {'id': group.id}) }}" class="delete-group-link">Supprimer le groupe</a>
+                        {% endif %}
+
+                        {% if app.user in group.users %}
+                            <a href="{{ path('group_quit', {'id': group.id}) }}" class="quit-group-link">Quitter ce groupe</a>
+                        {% endif %}
+                    </div>
+
+                    {% for invitation in group.invitations %}
+                        {% if invitation.user == app.user %}
+                            {% if invitation.accepted %}
+                                <span class="accepted">Invitation acceptée</span>
+                            {% elseif invitation.refused %}
+                                <span class="refused">Invitation refusée</span>
+                            {% else %}
+                                <a href="{{ path('group_invitation_accept', {'id': invitation.id}) }}" class="accept-invitation-link">Accepter l'invitation</a>
+                                <a href="{{ path('group_invitation_refuse', {'id': invitation.id}) }}" class="refuse-invitation-link">Refuser l'invitation</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun groupe trouvé.</p>
+    {% endif %}
 {% endblock %}
