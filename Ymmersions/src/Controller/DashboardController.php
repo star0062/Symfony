@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/dashboard')]
 class DashboardController extends AbstractController
 {
-    #[Route('/habits', methods: ['GET'])]
+    #[Route('/habits', name: 'dashboard', methods: ['GET'])]
     public function getHabits(HabitRepository $habitRepository): JsonResponse
     {
         $user = $this->getUser();
